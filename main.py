@@ -6,11 +6,11 @@ from pymodbus.client import ModbusSerialClient as ModbusClient
 
 
 def modbusConnector():
-    try:
+    # try:
 
         client = ""
         data = DriverDetail().find_all_driver_detail()
-
+        print(data)
         DevicedetailNameI = ""
         FrequncyOfGetDataI = 0
         BaurdRateI = 0
@@ -39,35 +39,35 @@ def modbusConnector():
             Active = driverDetail[12]
 
             if(DriverMasterID==2):
-                if (BaurdRateI != BaurdRate and DatabitsI != Databits and CommunicationPortI != CommunicationPort and ParityI != Parity and StopBitI != StopBit):
-                    client = ModbusClient(
-                        method='rtu',
-                        port=CommunicationPort,
-                        baudrate=BaurdRate,
-                        timeout=StopBit,
-                        parity=Parity[0:1],
-                        stopbits=StopBit,
-                        bytesize=Databits
-                    )
-                    BaurdRateI = BaurdRate
-                    DatabitsI = Databits
-                    CommunicationPortI = CommunicationPort
-                    ParityI = Parity
-                    StopBitI = StopBit
+                if (Active):
+                    if (BaurdRateI != BaurdRate and DatabitsI != Databits and CommunicationPortI != CommunicationPort and ParityI != Parity and StopBitI != StopBit):
+                        client = ModbusClient(
+                            method='rtu',
+                            port=CommunicationPort,
+                            baudrate=BaurdRate,
+                            timeout=StopBit,
+                            parity=Parity[0:1],
+                            stopbits=StopBit,
+                            bytesize=Databits
+                        )
+                        BaurdRateI = BaurdRate
+                        DatabitsI = Databits
+                        CommunicationPortI = CommunicationPort
+                        ParityI = Parity
+                        StopBitI = StopBit
 
-                    client.connect()
+                        client.connect()
 
-                if(Active):
-                    rtu = ModbusRTU(driverDetail[0], SlavID, client,FrequncyOfGetData)
-                    rtu.start()
+
+                        rtu = ModbusRTU(driverDetail[0], SlavID, client,FrequncyOfGetData)
+                        rtu.start()
             elif(DriverMasterID==1):
-                    client = ModbusClient(host=NetworkAddress, port=Port, unit_id=SlavID, auto_open=True, auto_close=True)
-                    tcp=ModbusTCP(driverDetail[0], SlavID, client,FrequncyOfGetData)
+                    tcp=ModbusTCP(driverDetail[0], SlavID, client,FrequncyOfGetData,NetworkAddress,Port)
                     tcp.start()
                 # rtu.raise_exception()
                 # rtu.join()
-    except:
-        modbusConnector()
+    # except:
+    #     modbusConnector()
 if __name__ == '__main__':
     modbusConnector()
     #garbej collection remove
