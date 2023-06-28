@@ -133,6 +133,13 @@ class TagMasterModel:
         result = self._db.get_multiple_data(TagMasterModel.TagMaster_TABLE, query_columns_dict)
         return result
 
+    def find_by_TagID(self, TagID):
+        query_columns_dict = {
+            'TagID': (column_compare['EQUAL_TO'], TagID)
+        }
+        result = self._db.get_single_data(TagMasterModel.TagMaster_TABLE, query_columns_dict)
+        return result
+
 class DeviceConnectionLog:
 
     DeviceConnectionLog_TABLE = 'DeviceConnectionLog'

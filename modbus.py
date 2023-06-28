@@ -7,12 +7,13 @@ from model import TagMasterModel, TagModel, DeviceConnectionLog
 
 class ModbusRTU(Thread):
 
-    def __init__(self,DriverDetailID, slavid,client,FrequncyOfGetData):
+    def __init__(self,DriverDetailID, slavid,client,FrequncyOfGetData,DriverName):
         super(ModbusRTU, self).__init__()
         self.DriverDetailID=DriverDetailID,
         self.slavid = slavid,
         self.client=client
         self.FrequncyOfGetData=FrequncyOfGetData
+        self.DriverName=DriverName
 
     def getDataFromRTU(self):
 

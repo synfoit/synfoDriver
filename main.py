@@ -59,13 +59,12 @@ def modbusConnector():
                         client.connect()
 
 
-                        rtu = ModbusRTU(driverDetail[0], SlavID, client,FrequncyOfGetData)
+                        rtu = ModbusRTU(driverDetail[0], SlavID, client,FrequncyOfGetData,driverDetail[1])
                         rtu.start()
             elif(DriverMasterID==1):
-                    tcp=ModbusTCP(driverDetail[0], SlavID, client,FrequncyOfGetData,NetworkAddress,Port)
+                    tcp=ModbusTCP(driverDetail[0], SlavID, client,FrequncyOfGetData,NetworkAddress,Port,driverDetail[1])
                     tcp.start()
-                # rtu.raise_exception()
-                # rtu.join()
+
     # except:
     #     modbusConnector()
 if __name__ == '__main__':
