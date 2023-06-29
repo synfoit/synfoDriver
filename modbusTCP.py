@@ -34,53 +34,54 @@ class ModbusTCP(Thread):
 
             taglist = TagMasterModel().find_by_DriverDetailID(self.DriverDetailID[0])
 
-            try:
+            # try:
 
-                for tagdata in taglist:
-                    count=count+1
-                    print(tagdata)
-                    # if(tagdata[8]=='YES'):
-                    client = ModbusClient(host=self.NetworkAddress, port=int(self.Port), unit_id=int(self.SlavID),
-                                          auto_open=True,
-                                          auto_close=True)
-                    data=""
-                    if(tagdata[5]=='INPUT REGISTER'):
+            for tagdata in taglist:
+                count=count+1
+                print(tagdata)
+                # if(tagdata[8]=='YES'):
+                client = ModbusClient(host=self.NetworkAddress, port=int(self.Port), unit_id=int(self.SlavID),
+                                      auto_open=True,
+                                      auto_close=True)
+                data=""
+                if(tagdata[5]=='INPUT REGISTER'):
 
-                        data = client.read_input_registers(int(tagdata[3]), int(tagdata[4]))
-                    elif(tagdata[5] == 'HOLDING REGISTER'):
+                    data = client.read_input_registers(int(tagdata[3]), int(tagdata[4]))
+                elif(tagdata[5] == 'HOLDING REGISTER'):
 
-                        data = client.read_holding_registers(int(tagdata[3]), int(tagdata[4]))
-                        packed_string=""
-                        # print("data",data)
-                    if(tagdata[7]=='NO'):
-                        packed_string = struct.pack("HH", data[0], data[1])
-                    else:
-                        packed_string = struct.pack("HH", data[1], data[0])
+                    data = client.read_holding_registers(int(tagdata[3]), int(tagdata[4]))
+                    packed_string=""
+                    # print("data",data)
+                if(tagdata[7]=='NO'):
+                    packed_string = struct.pack("HH", data[0], data[1])
+                else:
+                    packed_string = struct.pack("HH", data[1], data[0])
 
 
-                    unpacked_float = struct.unpack("f", packed_string)[0]
-                    # print(unpacked_float)
-                    now = datetime.now()
-                    dt_string = now.strftime("%Y-%m-%d %H:%M:%S")
-                    tagvalue=self.kelvinToCelsius(unpacked_float)
-                    if(tagdata[9]=='YES'):
+                unpacked_float = struct.unpack("f", packed_string)[0]
+                # print(unpacked_float)
+                now = datetime.now()
+                dt_string = now.strftime("%Y-%m-%d %H:%M:%S")
+                tagvalue=self.kelvinToCelsius(unpacked_float)
+                if(tagdata[9]=='YES'):
 
-                        TagModel().insert(tagdata[0], tagvalue, dt_string)
-                            # else:
-                            #     Isconnect = 2
-                            #     if (self.client.connected==False and Isconnect == 2):
-                            #         now = datetime.now()
-                            #         dt_string = now.strftime("%Y-%m-%d %H:%M:%S")
-                            #         DeviceConnectionLog().insert(self.DriverDetailID[0], self.client.connected,
-                            #                                      'disconnect device', dt_string)
-                            #         Isconnect = 3
-                            #     print(res)
-                            #     print("3")
-                                # print(self.client.connected)
-                    elif(tagdata[9]=='NO'):
-                        tagName = TagMasterModel().find_by_TagID(tagdata[0])
-                        RethinkDatabase().InsertData(self.DriverName, now, tagName[2], tagvalue, count)
-            except:
+                    TagModel().insert(tagdata[0], tagvalue, dt_string)
+                        # else:
+                        #     Isconnect = 2
+                        #     if (self.client.connected==False and Isconnect == 2):
+                        #         now = datetime.now()
+                        #         dt_string = now.strftime("%Y-%m-%d %H:%M:%S")
+                        #         DeviceConnectionLog().insert(self.DriverDetailID[0], self.client.connected,
+                        #                                      'disconnect device', dt_string)
+                        #         Isconnect = 3
+                        #     print(res)
+                        #     print("3")
+                            # print(self.client.connected)
+                elif(tagdata[9]=='NO'):
+                    tagName = TagMasterModel().find_by_TagID(tagdata[0])
+                    RethinkDatabase().InsertData(self.DriverName, now, tagName[2], tagvalue, count)
+                    print(count)
+            # except:
             #
             #     if (self.client.connected == False and Isconnect != 3):
             #         now = datetime.now()
@@ -88,7 +89,7 @@ class ModbusTCP(Thread):
             #         DeviceConnectionLog().insert(self.DriverDetailID[0], self.client.connected,
             #                                      'disconnect device', dt_string)
             #         Isconnect = 5
-               self.getDataFromRTU()
+            #    self.getDataFromRTU()
 
 
             time.sleep(self.FrequncyOfGetData)

@@ -8,7 +8,7 @@ class Database:
 
         self.db_handle = pyodbc.connect(
             'Driver={SQL Server};'
-            'Server=DESKTOP-4LU99N7;'
+            'Server=DESKTOP-V4HAO9I\SQLEXPRESS2019;'
             'Database=SynfoDriver;'
             'UID=sa;'
             'PWD=Servilink@123;'

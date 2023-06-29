@@ -1,4 +1,4 @@
-#
+
 # # coding: cp1252
 # import sys
 # import os
@@ -7,9 +7,9 @@
 # from cx_Freeze import setup, Executable
 # base = None
 #
-# # os.environ['TCL_LIBRARY']=r'C:\Python310\tcl\tcl8.6'
-# #
-# # os.environ['TK_LIBRARY']=r'C:/Python310/tcl/tk8.6'
+# os.environ['TCL_LIBRARY']=r'C:\Users\ADMIN\AppData\Local\Programs\Python\Python311\tcl\tcl8.6'
+#
+# os.environ['TK_LIBRARY']=r'C:\Users\ADMIN\AppData\Local\Programs\Python\Python311\tcl\tk8.6'
 #
 # if sys.platform=='win32':
 #     base='Win32GUI'

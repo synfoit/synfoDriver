@@ -8,7 +8,7 @@ class RethinkDatabase:
 
 
 
-    def InsertData(self,measurementvalue,datatime,tagname,value,devicename,count):
+    def InsertData(self,measurementvalue,datatime,tagname,value,count):
         r.connect('127.0.0.1', 28015).repl()
         self.connection = r.connect(db='synfodriver')
         try:
@@ -20,8 +20,9 @@ class RethinkDatabase:
         jsonvalue={
             'id': count,
             'tagname': tagname,
+            'tagvalue': value,
             'time': r.now().to_iso8601().run(self.connection),
-            'devicename': devicename
+            'devicename': measurementvalue
         }
         print(jsonvalue)
         self.modbusdata.insert(jsonvalue).run(self.connection)
