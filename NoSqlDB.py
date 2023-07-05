@@ -11,11 +11,15 @@ class RethinkDatabase:
     def InsertData(self,measurementvalue,datatime,tagname,value,count):
         r.connect('127.0.0.1', 28015).repl()
         self.connection = r.connect(db='synfodriver')
+        tableName  = str(measurementvalue).replace(" ", "")
+
         try:
-            r.table_create('modbusdata').run(self.connection)
+            r.table_create(tableName).run(self.connection)
+            # r.table_create('modbusdata').run(self.connection)
         except:
             print("ookkk")
-        self.modbusdata = r.table('modbusdata')
+        self.modbusdata = r.table(tableName)
+        # self.modbusdata = r.table('modbusdata')
 
         jsonvalue={
             'id': count,
